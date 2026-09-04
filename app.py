@@ -1,19 +1,9 @@
+# app.py
 from flask import Flask
+from controller.evento_controller import evento_bp
 
 app = Flask(__name__)
-
-@app.route("/")
-def inicio():
-    return "Olá, mundo!"
-
-@app.route("/sobre")
-def sobre():
-    return "Tu é?"
-
-@app.route("/eventos")
-def eventos():
-    return "Sai daqui meu!"
-
+app.register_blueprint(evento_bp)
 
 if __name__ == "__main__":
     app.run(debug=True)
