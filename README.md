@@ -1,5 +1,50 @@
 # Eventos Acadêmicos — Aulas 9 a 15
 
+## Instalação e execução no Windows
+
+### 1. Crie e ative o ambiente virtual
+
+Abra o PowerShell na pasta `meuProjeto`, onde ficam `app.py` e `requirements.txt`. Se o PowerShell abriu na pasta `Desenvolvimento_WebII`, entre no projeto com `cd .\meuProjeto`. Use o Python 3.14, versão usada nos testes do projeto.
+
+```powershell
+python --version
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+Crie o ambiente na primeira configuração. Em um novo terminal, basta ativar a `.venv` existente.
+
+### 2. Instale as bibliotecas
+
+Com a `.venv` ativa, instale o Flask, o Flask-SQLAlchemy e as demais dependências nas versões registradas em [`requirements.txt`](requirements.txt).
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
+### 3. Inicie o servidor
+
+```powershell
+python app.py
+```
+
+Abra [http://127.0.0.1:5000](http://127.0.0.1:5000), clique em **Criar conta** e entre com seu e-mail e sua senha. O SQLite cria o arquivo `instance/banco.db` na primeira execução. Para parar o servidor, pressione **Ctrl+C** no terminal.
+
+Se o PowerShell bloquear a execução de `Activate.ps1`, estes comandos usam o Python da `.venv` diretamente.
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe app.py
+```
+
+### 4. Crie uma conta de coordenação para testar a exclusão
+
+Em um segundo PowerShell na pasta `meuProjeto`, execute o comando abaixo com um e-mail diferente do usado na conta comum. O terminal solicita e confirma a senha. Em seguida, entre no site com essa conta.
+
+```powershell
+.\.venv\Scripts\python.exe -m flask --app app criar-admin --email coordenacao@exemplo.com
+```
+
 ## Aula 9 — CRUD de eventos
 
 - [`controller/evento_controller.py`](controller/evento_controller.py) coordena as rotas HTML. `GET /` lista os eventos e `POST /` cadastra um evento. Em `/editar/<id>`, o GET abre o formulário preenchido e o POST salva as mudanças. A rota `/excluir/<id>` recebe POST. Após uma gravação bem-sucedida, o controller redireciona para a listagem. Esse é o padrão Post/Redirect/Get, que evita reenviar a operação ao atualizar a página.
