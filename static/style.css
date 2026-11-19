@@ -1,0 +1,102 @@
+/* Aula 10 — A folha externa reúne cores, tipografia e estilos comuns das páginas Jinja. */
+:root {
+    font-family: "Segoe UI", system-ui, sans-serif;
+    color: #18283a;
+    background: #f3f6f8;
+    line-height: 1.55;
+    accent-color: #175a73;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+a { color: #175a73; text-underline-offset: .18em; }
+a:hover { color: #0d3c54; }
+::selection { color: #102f43; background: #c9e9f0; }
+:focus-visible { outline: 3px solid #23819e; outline-offset: 3px; }
+
+.largura { width: min(100% - 2rem, 62rem); margin-inline: auto; }
+.cabecalho { background: #122f42; color: #f2f8fb; }
+.cabecalho .largura { min-height: 4.25rem; padding-block: .6rem; }
+.marca { color: inherit; font-weight: 700; text-decoration: none; }
+.marca:hover { color: #c9e9f0; }
+.barra, .acoes { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem; }
+.barra { justify-content: space-between; }
+
+main.largura { padding-block: 2rem 3rem; overflow-wrap: anywhere; }
+h1, h2 { line-height: 1.2; letter-spacing: -.02em; }
+h1 { margin: 0; font-size: 2rem; }
+h2 { margin: 0; font-size: 1.25rem; }
+.meta { color: #475b6f; font-size: .9rem; }
+/* Aula 10 — Os formulários de cadastro, edição e login compartilham os mesmos estilos. */
+.painel {
+    background: white;
+    border: 1px solid #d3dee6;
+    border-radius: .8rem;
+    padding: clamp(1rem, 4vw, 1.75rem);
+}
+.auth { max-width: 28rem; margin-inline: auto; }
+.link-auth { margin: 1.25rem 0 0; }
+.campos { display: grid; grid-template-columns: 2fr 1.2fr 1.6fr .8fr; gap: 1rem; margin: 1rem 0; }
+.auth .campos { grid-template-columns: 1fr; }
+label { display: block; font-weight: 600; min-width: 0; }
+small { display: block; color: #475b6f; font-weight: 400; margin-top: .3rem; }
+input, button, .botao { border: 1px solid transparent; border-radius: .4rem; font: inherit; }
+input {
+    width: 100%;
+    min-width: 0;
+    margin-top: .25rem;
+    min-height: 2.75rem;
+    padding: .5rem .65rem;
+    border-color: #889cad;
+    background: white;
+    color: inherit;
+}
+button, .botao {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: .45rem .8rem;
+    background: #175a73;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+}
+button:hover, .botao:hover { background: #0d3c54; color: white; }
+.secundario { background: white; border-color: #a9bbc9; color: #17536a; }
+.secundario:hover { background: #e7f2f6; color: #0d3c54; }
+.excluir { color: #943329; }
+.excluir:hover { color: #76281f; background: #fff0ee; }
+button:disabled { opacity: .65; cursor: wait; }
+[hidden] { display: none !important; }
+
+.lista-cabecalho { margin-top: 2rem; }
+#lista-eventos { list-style: none; padding: 0; margin-block: .75rem 0; }
+.evento {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .65rem;
+    padding: .8rem 0;
+    border-bottom: 1px solid #ccd8e0;
+}
+.evento-info { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .85rem; }
+.evento-info span, time { color: #475b6f; }
+time { font-variant-numeric: tabular-nums; }
+/* Aulas 10 e 14 — Flashes e retornos de fetch usam os mesmos estilos de sucesso e erro. */
+.mensagem { padding: .6rem .85rem; border-radius: .4rem; }
+.mensagem.erro { color: #76281f; background: #fceae7; }
+.mensagem.sucesso { color: #13513c; background: #e0f2e9; }
+#feedback-eventos:empty { margin: 0; }
+
+/* Aula 10 — A folha comum adapta os campos e a lista para telas estreitas. */
+@media (max-width: 48rem) {
+    .campos { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 29rem) {
+    .campos { grid-template-columns: 1fr; }
+    .evento { align-items: flex-start; }
+    .evento-info strong { flex-basis: 100%; }
+}
