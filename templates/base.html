@@ -1,0 +1,37 @@
+{# Aula 10 — A base concentra a estrutura comum, os blocos Jinja e os arquivos estáticos ligados por url_for(). #}
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo %}Eventos Acadêmicos{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script defer src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+    <header class="cabecalho">
+        <div class="largura barra">
+            <a class="marca" href="{{ url_for('evento.index') }}">Eventos Acadêmicos</a>
+            {# Aulas 12 e 13 — A sessão fornece o nome e o perfil e controla a exibição do botão Sair. #}
+            {% if session.get('usuario_id') %}
+                <div class="acoes">
+                    <span>{{ session.nome }}{% if session.perfil == 'admin' %} · Coordenação{% endif %}</span>
+                    <form method="post" action="{{ url_for('auth.sair') }}">
+                        <button class="secundario">Sair</button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="largura">
+        {# Aula 10 — A página exibe e consome os flashes de sucesso ou erro enviados pelo controller. #}
+        {% for categoria, mensagem in get_flashed_messages(with_categories=true) %}
+            <p class="mensagem {{ categoria }}" role="{{ 'alert' if categoria == 'erro' else 'status' }}">
+                {{ mensagem }}
+            </p>
+        {% endfor %}
+        {% block conteudo %}{% endblock %}
+    </main>
+</body>
+</html>

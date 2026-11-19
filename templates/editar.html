@@ -1,0 +1,15 @@
+{# Aulas 9 e 10 — A tela herda a base e envia a edição por POST para o endereço do evento aberto. #}
+{% extends "base.html" %}
+{% block titulo %}Editar evento · Eventos Acadêmicos{% endblock %}
+{% block conteudo %}
+    <div class="painel">
+        <h1>Editar evento</h1>
+        <form method="post">
+            {% include "campos_evento.html" %}
+            <div class="acoes">
+                <button>Salvar alterações</button>
+                <a class="botao secundario" href="{{ url_for('evento.index') }}">Cancelar</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

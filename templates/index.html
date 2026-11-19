@@ -1,25 +1,70 @@
-<!doctype html>
-<html lang="pt-br">
+{# Aula 10 — A página herda o cabeçalho e as mensagens de base.html. #}
+{% extends "base.html" %}
 
-<head>
-    <meta charset="utf-8">
-    <title>Eventos</title>
-</head>
+{# Aula 14 — A macro fornece o mesmo item para a lista renderizada no servidor e para o JavaScript. #}
+{% macro item_evento(evento) %}
+    <li class="evento">
+        <div class="evento-info">
+            <strong data-campo="nome">{{ evento.nome }}</strong>
+            <time data-campo="data" datetime="{{ evento.data }}">{{ evento.data }}</time>
+            {# Aula 12 — A preferência do cookie controla a exibição de local e vagas. #}
+            {% if exibicao != 'compacta' %}
+                <span data-campo="local">{{ evento.local or 'Local a definir' }}</span>
+                <span data-campo="vagas">{{ evento.vagas }} vagas</span>
+            {% endif %}
+        </div>
+        <div class="acoes">
+            {# Aulas 9 e 10 — Os endereços de edição e exclusão são gerados a partir do ID. #}
+            <a class="botao secundario" href="{{ url_for('evento.editar', id=evento.id) }}">Editar</a>
+            {# Aula 13 — O formulário POST de exclusão aparece para a coordenação. #}
+            {% if session.perfil == 'admin' %}
+                <form method="post" action="{{ url_for('evento.excluir', id=evento.id) }}">
+                    <button class="secundario excluir">Excluir</button>
+                </form>
+            {% endif %}
+        </div>
+    </li>
+{% endmacro %}
 
-<body>
-    <h1>Eventos Acadêmicos</h1>
-    <form method="post">
-        <input name="nome" placeholder="Nome" required>
-        <input name="data" placeholder="Data" required>
-        <input name="local" placeholder="Local" required>
-        <input name="vagas" placeholder="Vagas" required>
-        <button type="submit">Cadastrar</button>
-    </form>
-    <ul>
-        {% for e in eventos %}
-        <li>{{ e.nome }} — {{ e.data }} — {{ e.local }}</li>
-        {% endfor %}
-    </ul>
-</body>
+{% block conteudo %}
+    <h1>Eventos</h1>
+    {# Aula 12 — A página compara o contador da sessão com o contador da aplicação. #}
+    <p class="meta">Visitas nesta sessão: {{ session.get('visitas', 0) }} · Acessos desde que o servidor iniciou: {{ acessos }}</p>
 
-</html>
+    <section class="painel">
+        <h2>Cadastrar evento</h2>
+        {# Aulas 9, 14 e 15 — action envia o formulário HTML. data-api informa ao script o endereço do POST JSON. #}
+        <form id="form-evento" method="post" action="{{ url_for('evento.index') }}"
+              data-api="{{ url_for('api.listar') }}">
+            {% include "campos_evento.html" %}
+            <button>Cadastrar</button>
+        </form>
+    </section>
+
+    <section>
+        <div class="barra lista-cabecalho">
+            <h2>Eventos cadastrados</h2>
+            <div class="acoes">
+                <button id="atualizar-lista" type="button" class="secundario" hidden>Atualizar lista</button>
+                {# Aula 12 — O formulário grava a opção de exibição para as próximas visitas. #}
+                <form method="post" action="{{ url_for('evento.preferencia') }}">
+                    {% set compacta = exibicao == 'compacta' %}
+                    <button class="secundario" name="modo" value="{{ 'completa' if compacta else 'compacta' }}">
+                        {{ 'Ver lista completa' if compacta else 'Ver lista compacta' }}
+                    </button>
+                </form>
+            </div>
+        </div>
+        {# Aula 14 — O JavaScript encontra a lista e o feedback pelos IDs. #}
+        <p id="feedback-eventos" role="status" aria-atomic="true"></p>
+        <p class="meta" id="lista-vazia"{% if eventos %} hidden{% endif %}>Cadastre um evento para começar.</p>
+        <ul id="lista-eventos">
+            {% for evento in eventos %}
+                {{ item_evento(evento) }}
+            {% endfor %}
+        </ul>
+        <template id="item-evento">
+            {{ item_evento({'id': 0, 'nome': '', 'data': '', 'local': '', 'vagas': 0}) }}
+        </template>
+    </section>
+{% endblock %}
