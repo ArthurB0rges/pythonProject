@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <title>Eventos</title>
+</head>
+
+<body>
+    <h1>Eventos Acadêmicos</h1>
+    <form method="post">
+        <input name="nome" placeholder="Nome" required>
+        <input name="data" placeholder="Data" required>
+        <input name="local" placeholder="Local" required>
+        <input name="vagas" placeholder="Vagas" required>
+        <button type="submit">Cadastrar</button>
+    </form>
+    <ul>
+        {% for e in eventos %}
+        <li>{{ e.nome }} — {{ e.data }} — {{ e.local }}</li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>
